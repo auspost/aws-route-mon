@@ -7,7 +7,7 @@ is found to be non-active, then the route has its' next hop replaced.
 #-------------------------------------------------------------------------------
 # Copyright 2015:
 # - Australian Postal Corporation
-# - Odecee Ptd Ltd
+# - Odecee Pty Ltd
 # - Philip Jay
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
