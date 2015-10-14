@@ -48,3 +48,13 @@ In addition to the proxy functionality, we'll also make these EC2 instance provi
 The `aws_route_mon.py` script shall be run on each EC2 instance, monitoring the private subnet's routing table.  The role of the script is to replace the next-hop on the 0.0.0.0/0 entry in the routing table if it detects a black-hole route.
 
 ![Squid ASG + NAT diagram](https://raw.githubusercontent.com/auspost/aws-route-mon/master/squid_nat.png)
+
+## Auto-detection of ENI ID
+Here's a snippet of bash code to get the (primary) ENI of an EC2 instance:
+
+```
+MAC=`curl -m 1 http://169.254.169.254/latest/meta-data/mac/ 2>/dev/null`
+ENI=`curl -m 1 http://169.254.169.254/latest/meta-data/network/interfaces/macs/${MAC}/interface-id/ 2>/dev/null`
+```
+
+This can be used as an input to the `--interface` argument of the `aws_route_mon.py` script.
