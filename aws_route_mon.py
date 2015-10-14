@@ -97,7 +97,7 @@ class AwsNatMon(object): # pylint: disable=too-many-instance-attributes
                          )
         parser.add_option("-P", "--profile",
                           default=None,
-                          help="AWS profile to use"
+                          help="Boto profile to use"
                          )
         parser.add_option("-I", "--access-id",
                           default=None,
