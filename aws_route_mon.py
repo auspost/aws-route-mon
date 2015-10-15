@@ -255,11 +255,11 @@ class AwsNatMon(object): # pylint: disable=too-many-instance-attributes
                          )
             sys.exit(0)
 
-        if route.instance_id is None:
-            # uh-oh! route doesn't have a machine attached
+        if (route.instance_id is None) or (str(route.state) != 'active'):
+            # uh-oh! route doesn't have a machine attached or is a blackhole,
             # back-off a random about of time & check once more
             backoff = random.randint(self.BACKOFF_MIN, self.BACKOFF_MAX)
-            self.log.debug("Route %s for route table %s has no instance "
+            self.log.debug("Route %s for route table %s has no active instance "
                            "attached, rechecking in %d seconds",
                            self.cidr,
                            self.route_table,
@@ -268,11 +268,12 @@ class AwsNatMon(object): # pylint: disable=too-many-instance-attributes
             time.sleep(backoff)
 
             route = self.get_route()
-            if route.instance_id is None:
-                # okay, the route still doesn't have a machine attached
+            if (route.instance_id is None) or (str(route.state) != 'active'):
+                # okay, the route still doesn't have an active machine attached:
                 # time to claim the route
-                self.log.warning("Route %s for route table %s has no instance "
-                                 "attached, replacing next hop with interface %s",
+                self.log.warning("Route %s for route table %s has no active "
+                                 "instance attached, replacing next hop with "
+                                 "interface %s",
                                  self.cidr,
                                  self.route_table,
                                  self.interface,
