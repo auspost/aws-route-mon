@@ -1,3 +1,6 @@
+# v1.1.0
+* Add blackhole route handling
+
 # v1.0.1
 * Add Travis CI config for pylint check
 
